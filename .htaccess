@@ -1,0 +1,110 @@
+# CineGrid IP block (shared with public_html)
+<IfModule mod_php.c>
+    php_value auto_prepend_file "../public_html/includes/ip_block_auto.php"
+    php_value upload_max_filesize 12M
+    php_value post_max_size 14M
+</IfModule>
+<IfModule mod_php7.c>
+    php_value auto_prepend_file "../public_html/includes/ip_block_auto.php"
+    php_value upload_max_filesize 12M
+    php_value post_max_size 14M
+</IfModule>
+<IfModule mod_php8.c>
+    php_value auto_prepend_file "../public_html/includes/ip_block_auto.php"
+    php_value upload_max_filesize 12M
+    php_value post_max_size 14M
+</IfModule>
+
+
+
+DirectoryIndex index.php
+
+# Never serve Google OAuth / credential JSON from this docroot
+<FilesMatch "^(kanban\.json|.*client_secret.*|\.env)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Extensionless URLs: /login → login.php (browser shows no .php)
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# Prefer kanban.php over any stray extensionless "kanban" file (credential leak fix)
+RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$ [NC]
+RewriteRule ^kanban/?$ kanban.php [L,QSA]
+
+# Kanban API bridges at docroot (boards / calendar / workspace / timeline)
+RewriteRule ^kanban_api/?$ kanban_api.php [L,QSA]
+RewriteRule ^kanban_timeline_api/?$ kanban_timeline_api.php [L,QSA]
+RewriteRule ^kanban_character_describe_api/?$ kanban_character_describe_api.php [L,QSA]
+
+# API: extensionless /api/name → /api/name.php (never rewrite URLs that already end in .php)
+RewriteCond %{REQUEST_URI} !\.php$ [NC]
+RewriteRule ^api/([A-Za-z0-9_-]+)/?$ api/$1.php [L,QSA]
+
+# Native desktop app API — never strip .php or proxy to public_html
+RewriteRule ^api/desktop(?:/.*)?$ - [L]
+RewriteRule ^api/cg_desktop\.php$ - [L]
+RewriteRule ^desktop_api\.php$ - [L]
+RewriteRule ^desktop_portal\.php$ - [L]
+RewriteRule ^desktop_ping\.php$ - [L]
+
+# Never canonicalize index.php → / when it would re-enter the app with query params (auth errors).
+RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$ [NC]
+RewriteCond %{QUERY_STRING} ^show=login [NC]
+RewriteRule ^index\.php$ - [L]
+
+# Static includes (CSS/JS): serve from kanban includes/ via PHP.
+RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$ [NC]
+RewriteRule ^includes/([A-Za-z0-9_.\-]+\.(?:css|js))$ serve_include_static.php?f=$1 [L,QSA]
+
+# Wrong URL if docroot segment leaks — would otherwise rewrite to ../public_html/public_html/client (broken)
+RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$ [NC]
+RewriteRule ^public_html/client(?:\.php)?/?$ /client [R=301,L,QSA]
+
+# Client timeline share — run local client_timeline.php (chdir + require public_html/client.php) so PHP
+# relative includes resolve; rewriting to ../public_html/client.php often 505s on this subdomain.
+RewriteRule ^client/?$ client_timeline.php [END,QSA]
+
+# GET /index.php → / (external requests only).
+# REDIRECT_STATUS must be empty so DirectoryIndex’s internal / → index.php is not
+# bounced back to / (that loop surfaces as empty HTTP 500 on this host).
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteCond %{REQUEST_URI} !^/api/desktop/ [NC]
+RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$ [NC]
+RewriteRule ^index\.php$ / [R=301,L,QSA]
+
+# GET /file.php → /file (skip /api/ JSON endpoints, API bridges, client.php, and api/desktop)
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteCond %{REQUEST_URI} !^/api/desktop/ [NC]
+RewriteCond %{REQUEST_URI} !^/api/ [NC]
+RewriteCond %{REQUEST_URI} !^/kanban_api\.php$ [NC]
+RewriteCond %{REQUEST_URI} !^/kanban_timeline_api\.php$ [NC]
+RewriteCond %{REQUEST_URI} !^/kanban_character_describe_api\.php$ [NC]
+RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$ [NC]
+RewriteRule ^(?!index\.php$|client\.php$|client_timeline\.php$|serve_include_static\.php$)(.+)\.php$ /$1 [R=301,L,QSA]
+
+# Map /path to path.php if it exists in this docroot
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{DOCUMENT_ROOT}/$1.php -f
+RewriteRule ^(.+)$ $1.php [L]
+
+# Serve api/, includes/, uploads/, and other public_html paths from the main site docroot
+RewriteCond %{REQUEST_URI} !^/api/desktop/ [NC]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.+)$ ../public_html/$1 [L]
+</IfModule>
+
+# php -- BEGIN cPanel-generated handler, do not edit
+# Set the “ea-php82” package as the default “PHP” programming language.
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php82 .php .php8 .phtml
+</IfModule>
+# php -- END cPanel-generated handler, do not edit

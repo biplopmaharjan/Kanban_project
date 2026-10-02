@@ -1,0 +1,416 @@
+/**
+ * Shared "View" dropdown — Kanban, Calendar, Workspace.
+ * Typography and menu chrome match across pages (including workspace shell overrides).
+ */
+.cg-view-menu {
+  flex-shrink: 0;
+}
+
+.cg-view-menu .cg-view-menu__toggle {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", Arial, sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.25;
+  min-height: 38px;
+  padding-top: 0.45rem;
+  padding-bottom: 0.45rem;
+  border-radius: 0.5rem;
+}
+
+.cg-workspace-container .cg-view-menu .cg-view-menu__toggle {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  min-height: 38px;
+}
+
+@keyframes cg-view-menu-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.cg-view-menu .cg-view-menu__list {
+  min-width: 12.5rem;
+  border-radius: 0.75rem;
+  padding: 0.4rem;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+  background: #fff;
+}
+
+/* Open animation (opacity only — Bootstrap Popper sets transform for placement) */
+.cg-view-menu .cg-view-menu__list.dropdown-menu.show {
+  animation: cg-view-menu-in 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cg-view-menu .cg-view-menu__list.dropdown-menu.show {
+    animation: none;
+  }
+}
+
+.cg-view-menu .cg-view-menu__list .dropdown-item {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", Arial, sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  border-radius: 0.5rem;
+  padding: 0.45rem 0.75rem;
+}
+
+.cg-view-menu .cg-view-menu__list .dropdown-divider {
+  margin: 0.2rem 0.45rem;
+  border-top: 1px solid rgba(15, 23, 42, 0.1);
+  opacity: 1;
+}
+
+.cg-view-menu .cg-view-menu__list .dropdown-item i {
+  width: 1.15em;
+  text-align: center;
+  opacity: 0.88;
+}
+
+/* Override Bootstrap’s default blue “active” / focus ring inside this menu */
+.cg-view-menu .cg-view-menu__list .dropdown-item.active,
+.cg-view-menu .cg-view-menu__list .dropdown-item:active {
+  background-color: rgba(15, 23, 42, 0.06);
+  color: #0f172a;
+}
+.cg-view-menu .cg-view-menu__list .dropdown-item.active:hover,
+.cg-view-menu .cg-view-menu__list .dropdown-item.active:focus,
+.cg-view-menu .cg-view-menu__list .dropdown-item:focus-visible {
+  background-color: rgba(15, 23, 42, 0.1);
+  color: #0f172a;
+}
+
+/* Dark theme (body.kanban-theme-dark on all three pages) */
+.kanban-theme-dark .cg-view-menu .cg-view-menu__toggle {
+  color: #fff;
+  background: #e03131;
+  border-color: #e03131;
+}
+
+.kanban-theme-dark .cg-view-menu .cg-view-menu__toggle:hover,
+.kanban-theme-dark .cg-view-menu .cg-view-menu__toggle:focus {
+  color: #fff;
+  background: #c92a2a;
+  border-color: #c92a2a;
+}
+
+.kanban-theme-dark .cg-view-menu .cg-view-menu__list {
+  background: rgba(30, 41, 59, 0.98);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  box-shadow: 0 12px 32px rgba(2, 6, 23, 0.45);
+}
+
+.kanban-theme-dark .cg-view-menu .cg-view-menu__list .dropdown-item {
+  color: #e2e8f0;
+}
+
+.kanban-theme-dark .cg-view-menu .cg-view-menu__list .dropdown-item:hover,
+.kanban-theme-dark .cg-view-menu .cg-view-menu__list .dropdown-item:focus {
+  background: rgba(148, 163, 184, 0.12);
+  color: #f8fafc;
+}
+
+.kanban-theme-dark .cg-view-menu .cg-view-menu__list .dropdown-item.active,
+.kanban-theme-dark .cg-view-menu .cg-view-menu__list .dropdown-item:active {
+  background: rgba(148, 163, 184, 0.12);
+  color: #f8fafc;
+}
+.kanban-theme-dark .cg-view-menu .cg-view-menu__list .dropdown-item.active:hover,
+.kanban-theme-dark .cg-view-menu .cg-view-menu__list .dropdown-item.active:focus,
+.kanban-theme-dark .cg-view-menu .cg-view-menu__list .dropdown-item:focus-visible {
+  background: rgba(148, 163, 184, 0.16);
+  color: #f8fafc;
+}
+
+.kanban-theme-dark .cg-view-menu .cg-view-menu__list .dropdown-item.disabled,
+.kanban-theme-dark .cg-view-menu .cg-view-menu__list .dropdown-item:disabled {
+  color: #64748b;
+  opacity: 0.75;
+}
+
+.kanban-theme-dark .cg-view-menu .cg-view-menu__list .dropdown-divider {
+  border-top-color: rgba(148, 163, 184, 0.22);
+}
+
+/* Fixed bottom view switcher (Timeline / Calendar / Workspace / Kanban) */
+.cg-page--bottom-nav {
+  padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+}
+
+.cg-bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(8px + max(18px, env(safe-area-inset-bottom, 0px)));
+  margin-left: auto;
+  margin-right: auto;
+  width: fit-content;
+    max-width: min(820px, calc(100vw - 24px));
+  box-sizing: border-box;
+  /* Above site support .chat-widget (9999); below board-chat backdrop (10025) */
+  z-index: 10010;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  box-shadow:
+    0 4px 6px rgba(15, 23, 42, 0.06),
+    0 18px 44px rgba(15, 23, 42, 0.16);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transform: none;
+  pointer-events: auto;
+  isolation: isolate;
+}
+
+/* Workspace: keep above the centered tools dock */
+.cg-workspace-page .cg-bottom-nav {
+  bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+  z-index: 10015;
+}
+
+.cg-bottom-nav__btn {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 6px 8px 5px;
+  margin: 0;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  color: #334155;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", Arial, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.15s ease, color 0.15s ease;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+a.cg-bottom-nav__btn:visited {
+  color: #334155;
+}
+
+.cg-bottom-nav__btn i {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin-bottom: 1px;
+}
+
+.cg-bottom-nav__btn:hover,
+.cg-bottom-nav__btn:focus-visible {
+  background: rgba(15, 23, 42, 0.07);
+  color: #0f172a;
+  outline: none;
+}
+
+.cg-bottom-nav__btn.is-active {
+  background: rgba(224, 49, 49, 0.14);
+  color: #c92a2a;
+}
+
+.cg-bottom-nav__btn.is-active i {
+  opacity: 1;
+}
+
+.cg-bottom-nav__btn:disabled,
+.cg-bottom-nav__btn[aria-disabled="true"] {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.kanban-theme-dark .cg-bottom-nav {
+  background: rgba(30, 41, 59, 0.96);
+  border-color: rgba(148, 163, 184, 0.22);
+  box-shadow:
+    0 4px 6px rgba(2, 6, 23, 0.35),
+    0 18px 48px rgba(2, 6, 23, 0.55);
+}
+
+.kanban-theme-dark .cg-bottom-nav__btn {
+  color: #cbd5e1;
+}
+
+.kanban-theme-dark .cg-bottom-nav__btn:hover,
+.kanban-theme-dark .cg-bottom-nav__btn:focus-visible {
+  background: rgba(148, 163, 184, 0.14);
+  color: #f8fafc;
+}
+
+.kanban-theme-dark .cg-bottom-nav__btn.is-active {
+  background: rgba(224, 49, 49, 0.22);
+  color: #ffa8a8;
+}
+
+@media (max-width: 767.98px) {
+  body:has(.modal.show) .cg-bottom-nav {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease, visibility 0.18s ease;
+  }
+  body:has(.modal.show) .cg-page--bottom-nav {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  /* Vertical centering clips modal headers under the notch / fixed site header */
+  .modal .modal-dialog.modal-dialog-centered {
+    align-items: flex-start;
+    min-height: auto;
+  }
+  .modal {
+    padding-top: calc(16px + env(safe-area-inset-top, 0px));
+  }
+  body.cg-kanban-portal .modal {
+    padding-top: calc(env(safe-area-inset-top, 0px) + var(--cg-kanban-portal-header-h, 60px) + 12px);
+  }
+}
+
+/* Board member avatars + dropdown (Calendar, Timeline, Workspace; also usable on Kanban) */
+.cg-board-avatar-wrap {
+  margin-left: -8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  overflow: hidden;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+.cg-board-avatars .cg-board-avatar-wrap:first-child {
+  margin-left: 0;
+}
+/* img + two classes beats global img{max-width:100%;height:auto} (critical CSS / Bootstrap reboot) */
+.cg-board-avatars img.cg-board-avatar {
+  width: 32px;
+  height: 32px;
+  max-width: 32px;
+  max-height: 32px;
+  min-width: 0;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+  background: #e2e8f0;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  display: block;
+}
+.cg-board-avatars .cg-board-avatar-initials {
+  width: 32px;
+  height: 32px;
+  max-width: 32px;
+  max-height: 32px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  background: #e03131;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+.cg-board-avatars.cursor-pointer {
+  cursor: pointer;
+}
+.cg-board-avatars.cursor-pointer:hover {
+  opacity: 0.9;
+}
+.cg-board-members-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 4px;
+  min-width: 220px;
+  max-width: 280px;
+  max-height: 70vh;
+  overflow-y: auto;
+  background: #fff;
+  z-index: 1050;
+}
+.cg-board-members-dropdown.is-open {
+  display: block;
+}
+.cg-board-members-modal-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+}
+.cg-board-members-modal-item:last-child {
+  border-bottom: none;
+}
+.cg-board-members-modal-item .cg-member-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #e2e8f0;
+}
+.cg-board-members-modal-item .cg-member-initials {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e03131;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cg-board-members-modal-item .cg-member-name {
+  font-weight: 600;
+}
+.cg-board-members-modal-item .cg-member-role {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.kanban-theme-dark .cg-board-members-dropdown {
+  background: rgba(15, 23, 42, 0.94);
+  border-color: rgba(148, 163, 184, 0.18);
+  color: #f8fafc;
+}
+.kanban-theme-dark .cg-board-members-dropdown-header {
+  background: rgba(30, 41, 59, 0.96) !important;
+  border-bottom-color: rgba(148, 163, 184, 0.16) !important;
+  color: #f8fafc !important;
+}
+.kanban-theme-dark .cg-board-members-modal-item {
+  border-bottom-color: rgba(148, 163, 184, 0.12);
+}
+.kanban-theme-dark .cg-board-members-modal-item .cg-member-name {
+  color: #f8fafc;
+}
+.kanban-theme-dark .cg-board-members-modal-item .cg-member-role {
+  color: #94a3b8;
+}

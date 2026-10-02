@@ -1,0 +1,77 @@
+/* Full-page loading overlay (workspace-style) — Kanban portal + main app views */
+/* [hidden] must win over display:flex so the overlay does not flash before JS runs */
+.cg-portal-loading-overlay[hidden] {
+    display: none !important;
+}
+.cg-portal-loading-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10030;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(248, 250, 252, 0.72);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+.cg-portal-loading-card {
+    min-width: 240px;
+    padding: 16px 18px;
+    border-radius: 14px;
+    border: 1px solid rgba(15, 23, 42, 0.1);
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: 0 16px 34px rgba(15, 23, 42, 0.15);
+    text-align: center;
+}
+.cg-portal-loading-spinner {
+    width: 28px;
+    height: 28px;
+    margin: 0 auto 10px;
+    border-radius: 999px;
+    border: 2.5px solid rgba(15, 23, 42, 0.16);
+    border-top-color: #6366f1;
+    animation: cgPortalLoadingSpin 0.9s linear infinite;
+}
+.cg-portal-loading-title {
+    font-weight: 700;
+    color: #0f172a;
+    font-size: 0.95rem;
+}
+.cg-portal-loading-subtitle {
+    margin-top: 2px;
+    color: #475569;
+    font-size: 0.78rem;
+}
+/* Same as workspace card, without the bold title line (loading only in overlay, not as a heading). */
+.cg-portal-loading-card--message-only .cg-portal-loading-subtitle {
+    margin-top: 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #334155;
+}
+@keyframes cgPortalLoadingSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+.kanban-theme-dark .cg-portal-loading-overlay {
+    background: rgba(15, 23, 42, 0.78);
+}
+.kanban-theme-dark .cg-portal-loading-card {
+    background: rgba(30, 41, 59, 0.92);
+    border-color: rgba(148, 163, 184, 0.22);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+}
+.kanban-theme-dark .cg-portal-loading-title {
+    color: #f1f5f9;
+}
+.kanban-theme-dark .cg-portal-loading-subtitle {
+    color: #94a3b8;
+}
+.kanban-theme-dark .cg-portal-loading-card--message-only .cg-portal-loading-subtitle {
+    color: #cbd5e1;
+}
+.kanban-theme-dark .cg-portal-loading-spinner {
+    border-color: rgba(148, 163, 184, 0.28);
+    border-top-color: #f87171;
+}

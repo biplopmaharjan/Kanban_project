@@ -1,0 +1,63 @@
+/* Board member avatar stack only (no dropdown — used by timeline, calendar, workspace) */
+.cg-board-avatars {
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    flex-shrink: 0;
+    min-width: 0;
+}
+/* !important: global img rules otherwise blow up facepile */
+.cg-board-avatar-wrap {
+    margin-left: -8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 32px !important;
+    height: 32px !important;
+    max-width: 32px !important;
+    max-height: 32px !important;
+    overflow: hidden;
+    border-radius: 50% !important;
+    box-sizing: border-box;
+}
+.cg-board-avatars .cg-board-avatar-wrap:first-child { margin-left: 0; }
+.cg-board-avatars img.cg-board-avatar {
+    width: 32px !important;
+    height: 32px !important;
+    max-width: 32px !important;
+    max-height: 32px !important;
+    min-width: 0 !important;
+    border-radius: 50% !important;
+    object-fit: cover;
+    border: 2px solid #fff;
+    background: #e2e8f0;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    display: block;
+}
+.cg-board-avatars .cg-board-avatar-initials {
+    width: 32px !important;
+    height: 32px !important;
+    max-width: 32px !important;
+    max-height: 32px !important;
+    border-radius: 50% !important;
+    border: 2px solid #fff;
+    background: #e03131;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-sizing: border-box;
+}
+.kanban-theme-dark .cg-board-avatars img.cg-board-avatar {
+    border-color: rgba(30,41,59,0.95);
+    background: #334155;
+}
+.kanban-theme-dark .cg-board-avatars .cg-board-avatar-initials {
+    border-color: rgba(30,41,59,0.95);
+}
